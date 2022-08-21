@@ -17,16 +17,11 @@ export default function Home() {
         <h1 className="text-6xl font-bold">
           Welcome to{' '}
           <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
+           Online Form
           </a>
         </h1>
 
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">
-            pages/index.js
-          </code>
-        </p>
+  
         <div className="mt-10">
           <button
             className={`mt-10 uppercase text-sm font-bold tracking-wide text-gray-100 p-3 rounded-lg  focus:outline-none focus:shadow-outline hover:shadow-xl active:scale-90 transition duration-150  ${
@@ -34,10 +29,10 @@ export default function Home() {
             }`}
             onClick={() => (session?.user?.accessToken ? signOut() : signIn())}
           >
-            {session?.user?.accessToken ? 'Sign Out' : 'Sign In'}
+            {session?.user?.accessToken ? 'Sign Out' : 'Sign In as user'}
           </button>
         </div>
-        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
+        {/* <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
           <a
             href="https://nextjs.org/docs"
             className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
@@ -77,20 +72,9 @@ export default function Home() {
               Instantly deploy your Next.js site to a public URL with Vercel.
             </p>
           </a>
-        </div>
+        </div> */}
       </main>
 
-      <footer className="flex items-center justify-center w-full h-24 border-t">
-        <a
-          className="flex items-center justify-center"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="h-4 ml-2" />
-        </a>
-      </footer>
     </div>
   );
 }
