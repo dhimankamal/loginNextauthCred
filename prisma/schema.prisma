@@ -20,7 +20,6 @@ model User {
 
 model Services {
   id     String  @id @default(cuid())
-  header Boolean
   title  String
   text   String
 }
