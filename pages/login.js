@@ -12,23 +12,20 @@ export default function SignIn ({ csrfToken }) {
     <>
       <div className='bg-white'>
         <Formik
-          initialValues={{ email: '', password: '', tenantKey: '' }}
+          initialValues={{ email: '', password: '' }}
           validationSchema={Yup.object({
             email: Yup.string()
               .max(30, 'Must be 30 characters or less')
               .email('Invalid email address')
               .required('Please enter your email'),
-            password: Yup.string().required('Please enter your password'),
-            tenantKey: Yup.string()
-              .max(20, 'Must be 20 characters or less')
-              .required('Please enter your organization name')
+            password: Yup.string().required('Please enter your password')
+          
           })}
           onSubmit={async (values, { setSubmitting }) => {
             const res = await signIn('credentials', {
               redirect: false,
               email: values.email,
               password: values.password,
-              tenantKey: values.tenantKey,
               callbackUrl: `${window.location.origin}`
             })
             if (res?.error) {
@@ -91,25 +88,7 @@ export default function SignIn ({ csrfToken }) {
                       <ErrorMessage name='password' />
                     </div>
                   </div>
-                  <div className='mb-6'>
-                    <label
-                      htmlFor='tenantKey'
-                      className='uppercase text-sm text-gray-600 font-bold'
-                    >
-                      Tenant
-                      <Field
-                        name='tenantKey'
-                        aria-label='enter your Tenant'
-                        aria-required='true'
-                        type='text'
-                        className='w-full bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline'
-                      />
-                    </label>
-
-                    <div className='text-red-600 text-sm'>
-                      <ErrorMessage name='tenantKey' />
-                    </div>
-                  </div>
+              
                   <div className='flex items-center justify-center'>
                     <button
                       type='submit'

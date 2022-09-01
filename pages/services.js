@@ -1,7 +1,6 @@
 import React from 'react'
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
-import useSWR from 'swr'
 
 export default function Services ({ services }) {
   const dataApi = async () => {
