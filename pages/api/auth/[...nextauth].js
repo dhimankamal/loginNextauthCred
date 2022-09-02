@@ -2,11 +2,10 @@ import NextAuth from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaClient } from '@prisma/client'
 
-secret:process.env.SECRET
-
 const prisma = new PrismaClient()
 
 export default NextAuth({
+  site: 'https://login-nextauth-cred.vercel.app/',
   providers: [
     CredentialsProvider({
       id: 'credentials',
