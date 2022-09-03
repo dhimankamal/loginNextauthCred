@@ -16,6 +16,20 @@ model User {
   userid   String  @unique
   name     String?
   email    String? @unique
+  gender  String
+  dob   DateTime
+  placeOfBirth String
+  age Int
+  fatherName String
+  motherName String
+  address String
+  pincode BigInt
+  district String
+  maritalStatus String
+  spouseName String
+  phoneNumber BigInt
+  voterId BigInt
+  adharId BigInt
 }
 
 model Services {
