@@ -1,33 +1,41 @@
 import { useState } from 'react'
-import { Formik, Field, ErrorMessage , Form} from 'formik'
-import * as Yup from 'yup'
+import { Formik, Field, ErrorMessage, Form } from 'formik'
+import { useSession } from 'next-auth/react'
 
 export default function Add () {
   const [error, setError] = useState(null)
-  const submit = values => {
-    console.log('value____', values)
-  }
-
-  return (
-    <>
-      <div className='bg-white'>
-        <Formik
-          initialValues={{
-            fullname: '',
-            gender: '',
-            placeOfBirth: '',
-            age: ''
-          }}
-          onSubmit={async (values) => {
-            await new Promise((r) => setTimeout(r, 500));
-            alert(JSON.stringify(values, null, 2));
-          }}
-        >
-        
+  const { data: session } = useSession()
+  console.log('sessoion_________', session)
+  if (session) {
+    return (
+      <>
+        <div className='bg-white'>
+          <Formik
+            initialValues={{
+              fullname: '',
+              gender: '',
+              placeOfBirth: '',
+              age: ''
+            }}
+            onSubmit={async values => {
+              console.log("values___" , values)
+              try {
+                let res = await fetch('./api/updateUserData', {
+                  method: 'POST',
+                  body: JSON.stringify({id:session.user.accessToken,values})
+                })
+                console.log("responsed" , res)
+              } catch (error) {
+                console.log("error" , error)
+              }
+            }}
+          >
             <Form>
               <div className='bg-white flex flex-col items-center justify-center min-h-screen py-2 shadow-lg'>
                 <div className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-4/5'>
-                  <h1 className='text-3xl'>Add Data</h1>
+                  <h1 className='text-3xl'>
+                    Add Data here user id - {session.user.accessToken}
+                  </h1>
 
                   <div className='text-red-400 text-md text-center rounded p-2'>
                     {error}
@@ -120,15 +128,17 @@ export default function Add () {
                       type='submit'
                       className='uppercase text-sm font-bold tracking-wide bg-green-400 text-gray-100 p-3 rounded-lg w-full focus:outline-none focus:shadow-outline hover:shadow-xl active:scale-90 transition duration-150'
                     >
-                       Update Now
+                      Update Now
                     </button>
                   </div>
                 </div>
               </div>
             </Form>
-      
-        </Formik>
-      </div>
-    </>
-  )
+          </Formik>
+        </div>
+      </>
+    )
+  } else {
+    return <>Login Again</>
+  }
 }

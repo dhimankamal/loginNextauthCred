@@ -54,6 +54,13 @@ export default function Navbar () {
                 Services 
               </a>
             </Link>
+            <Link href={'/add'}>
+              <a
+                className='block mt-4 lg:inline-block lg:mt-0 text-teal-100 hover:text-white mr-4 text-lg'
+              >
+                Add 
+              </a>
+            </Link>
 
             <button
               className={` uppercase text-sm font-bold tracking-wide text-gray-100 p-3 rounded-lg  focus:outline-none focus:shadow-outline hover:shadow-xl active:scale-90 transition duration-150  ${

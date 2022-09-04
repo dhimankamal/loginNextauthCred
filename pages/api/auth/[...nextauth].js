@@ -5,7 +5,6 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export default NextAuth({
-  site: 'https://login-nextauth-cred.vercel.app/',
   providers: [
     CredentialsProvider({
       id: 'credentials',
