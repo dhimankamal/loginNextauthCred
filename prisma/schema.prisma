@@ -23,13 +23,13 @@ model User {
   fatherName String
   motherName String
   address String
-  pincode BigInt
+  pincode Int
   district String
   maritalStatus String
   spouseName String
-  phoneNumber BigInt
-  voterId BigInt
-  adharId BigInt
+  phoneNumber Int
+  voterId Int
+  adharId Int
 }
 
 model Services {

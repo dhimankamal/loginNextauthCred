@@ -10,9 +10,12 @@
     "formik": "^2.2.9",
     "next": "latest",
     "next-auth": "^4.10.3",
+    "nextjs-progressbar": "^0.0.14",
     "prisma": "^4.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-icons": "^4.4.0",
+    "react-toastify": "^9.0.8",
     "yup": "^0.32.11"
   },
   "devDependencies": {

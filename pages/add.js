@@ -1,8 +1,14 @@
 import { useState } from 'react'
 import { Formik, Field, ErrorMessage, Form } from 'formik'
 import { useSession } from 'next-auth/react'
+import * as React from "react";
+import toast from "../components/toast";
 
 export default function Add () {
+  const notify = React.useCallback((type, message) => {
+    console.log('toast caall')
+    toast({ type, message });
+  }, []);
   const [error, setError] = useState(null)
   const { data: session } = useSession()
   console.log('sessoion_________', session)
@@ -24,8 +30,10 @@ export default function Add () {
                   method: 'POST',
                   body: JSON.stringify({id:session.user.accessToken,values})
                 })
+                notify("success", "Success!")
                 console.log("responsed" , res)
               } catch (error) {
+                notify("error", "Error!")
                 console.log("error" , error)
               }
             }}

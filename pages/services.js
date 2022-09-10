@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
@@ -13,7 +13,10 @@ export default function Services ({ services }) {
       console.log('error', error)
     }
   }
-  dataApi()
+  useEffect(() => {
+    dataApi()
+  }, [])
+
   return (
     <>
       <div className='mx-40 my-10'>
