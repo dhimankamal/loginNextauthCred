@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
+import { getSession, useSession } from 'next-auth/react'
 
 export default function Profile () {
   const { data: session } = useSession()
+
   const [profileData, setProfileData] = useState({})
 
   console.log('session', session)
 
-  const getUSerData = async id => {
-    
+  const getUSerData = async () => {
+    const getUserSession = await getSession()
+    if (getUserSession) {
       try {
         const res = await fetch('/api/getUser', {
-          body: JSON.stringify(id)
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(getUserSession?.user)
         })
         const data = await res.json()
         setProfileData(data)
@@ -19,11 +25,11 @@ export default function Profile () {
       } catch (error) {
         console.log('error', error)
       }
-    
+    }
   }
 
   useEffect(() => {
-    getUSerData(session?.user?.id)
+    getUSerData()
   }, [])
 
   let data = [
