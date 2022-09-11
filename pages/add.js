@@ -1,40 +1,64 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Formik, Field, ErrorMessage, Form } from 'formik'
-import { useSession } from 'next-auth/react'
-import * as React from "react";
-import toast from "../components/toast";
+import { useSession, getSession } from 'next-auth/react'
+import * as React from 'react'
+import toast from '../components/toast'
 
 export default function Add () {
   const notify = React.useCallback((type, message) => {
-    console.log('toast caall')
-    toast({ type, message });
-  }, []);
+    toast({ type, message })
+  }, [])
   const [error, setError] = useState(null)
   const { data: session } = useSession()
-  console.log('sessoion_________', session)
-  if (session) {
+
+  const [profileData, setProfileData] = useState({})
+  const getUSerData = async () => {
+    const getUserSession = await getSession()
+    if (getUserSession) {
+      try {
+        const res = await fetch('/api/getUser', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(getUserSession?.user)
+        })
+        const data = await res.json()
+        setProfileData(data)
+        console.log('user data', data)
+      } catch (error) {
+        console.log('error', error)
+      }
+    }
+  }
+
+  useEffect(() => {
+    getUSerData()
+  }, [])
+
+  if (session && profileData?.id) {
     return (
       <>
         <div className='bg-white'>
           <Formik
             initialValues={{
-              fullname: '',
+              fullname: `${profileData?.name}`,
               gender: '',
               placeOfBirth: '',
               age: ''
             }}
             onSubmit={async values => {
-              console.log("values___" , values)
+              console.log('values___', values)
               try {
                 let res = await fetch('./api/updateUserData', {
                   method: 'POST',
-                  body: JSON.stringify({id:session.user.accessToken,values})
+                  body: JSON.stringify({ id: session.user.accessToken, values })
                 })
-                notify("success", "Success!")
-                console.log("responsed" , res)
+                notify('success', 'Success update!')
+                console.log('responsed', res)
               } catch (error) {
-                notify("error", "Error!")
-                console.log("error" , error)
+                notify('error', 'Error!')
+                console.log('error', error)
               }
             }}
           >

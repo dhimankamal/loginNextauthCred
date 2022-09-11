@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { getSession, useSession } from 'next-auth/react'
+import { getSession } from 'next-auth/react'
 
 export default function Profile () {
-  const { data: session } = useSession()
 
   const [profileData, setProfileData] = useState({})
-
-  console.log('session', session)
-
   const getUSerData = async () => {
     const getUserSession = await getSession()
     if (getUserSession) {
@@ -63,11 +59,11 @@ export default function Profile () {
     },
     {
       title: 'Mother name',
-      value: 'test'
+      value: profileData?.mothername || '-'
     },
     {
       title: 'Address',
-      value: '---'
+      value: profileData?.address || '-'
     }
   ]
   return (

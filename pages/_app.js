@@ -3,6 +3,7 @@ import { SessionProvider } from 'next-auth/react'
 import Footer from '../components/Footer'
 import Navbar from '../components/Navbar'
 import NextNProgress from 'nextjs-progressbar'
+import { ToastContainer } from 'react-toastify';
 
 function MyApp ({ Component, pageProps: { session, ...pageProps } }) {
   return (
@@ -11,6 +12,7 @@ function MyApp ({ Component, pageProps: { session, ...pageProps } }) {
       <Navbar />
       <Component {...pageProps} />
       <Footer />
+      <ToastContainer />
     </SessionProvider>
   )
 }
