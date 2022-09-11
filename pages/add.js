@@ -171,6 +171,6 @@ export default function Add () {
       </>
     )
   } else {
-    return <>Login Again</>
+    return <>Loading</>
   }
 }
