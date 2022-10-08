@@ -36,4 +36,5 @@ model Services {
   id     String  @id @default(cuid())
   title  String
   text   String
+  fields String
 }
