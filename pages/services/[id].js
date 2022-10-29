@@ -48,7 +48,7 @@ export default function ServicePage () {
 
   const getForm = async () => {
     console.log('process.env+++' ,process.env.NEXT_PUBLIC_NEXTAUTH_URL )
-    const formUrl = `http://localhost:3000/aadhaar.pdf`
+    const formUrl = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}aadhaar.pdf`
     const formPdfBytes = await fetch(formUrl).then(res => res.arrayBuffer())
     const pdfDoc = await PDFDocument.load(formPdfBytes)
     const form = pdfDoc.getForm()
