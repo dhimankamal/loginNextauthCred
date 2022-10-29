@@ -7,7 +7,6 @@ export default function ServicePage () {
   const router = useRouter()
   const { id } = router.query
   const [fields, setFields] = useState(['loading'])
-  const [pdfInfo, setPdfInfo] = useState([])
   const [profileData, setProfileData] = useState({})
 
   const getServiceDetail = async () => {
@@ -20,7 +19,6 @@ export default function ServicePage () {
       if (data && data.fields) {
         setFields(JSON.parse(data.fields))
       }
-      getForm()
     } catch (error) {
       console.log(error)
     }
@@ -39,6 +37,7 @@ export default function ServicePage () {
         })
         const data = await res.json()
         setProfileData(data)
+
         console.log('user data', data)
       } catch (error) {
         console.log('error', error)
@@ -47,16 +46,16 @@ export default function ServicePage () {
   }
 
   const getForm = async () => {
-    console.log('process.env+++' ,process.env.NEXT_PUBLIC_NEXTAUTH_URL )
+    console.log('process.env+++', process.env.NEXT_PUBLIC_NEXTAUTH_URL)
     const formUrl = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}aadhaar.pdf`
     const formPdfBytes = await fetch(formUrl).then(res => res.arrayBuffer())
     const pdfDoc = await PDFDocument.load(formPdfBytes)
     const form = pdfDoc.getForm()
     //const fields = form.getFields()
-    console.log('profileData',profileData)
+    console.log('profileData', profileData)
     form.getTextField('Text-ODjXylvMS3').setText(profileData.name)
     form.getTextField('Text-vroy5YIQGU').setText(profileData.address)
-   
+
     // fields.forEach(field => {
     //   const type = field.constructor.name
     //   const name = field.getName()
@@ -67,13 +66,16 @@ export default function ServicePage () {
     const bytes = new Uint8Array(pdfBytes)
     const blob = new Blob([bytes], { type: 'application/pdf' })
     const docUrl = URL.createObjectURL(blob)
-    setPdfInfo(docUrl)
-    console.log('form+++', pdfBytes)
+
+    return window.open(docUrl)
   }
 
-  useEffect(async () => {
-    await getUSerData()
-    getServiceDetail()
+  useEffect(() => {
+    const data = async () => {
+      await getUSerData()
+      await getServiceDetail()
+    }
+    data()
   }, [id])
 
   useEffect(() => {
@@ -93,12 +95,13 @@ export default function ServicePage () {
         </ul>
         <button
           className='bg-gray-700 px-10 py-4 rounded text-xl text-white font-bold my-10 disabled:opacity-50'
-          onClick={() => window.open(pdfInfo)}
+          onClick={async () => {
+            getForm()
+          }}
           disabled={fields[0] === 'loading'}
         >
           Print Pdf
         </button>
-        <a href={pdfInfo}>{pdfInfo}</a>
       </div>
     </main>
   )
