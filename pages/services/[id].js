@@ -98,6 +98,7 @@ export default function ServicePage () {
         >
           Print Pdf
         </button>
+        <a href={pdfInfo}>{pdfInfo}</a>
       </div>
     </main>
   )
