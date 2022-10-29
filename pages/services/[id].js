@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { getSession } from 'next-auth/react'
+import { PDFDocument } from 'pdf-lib'
 
 export default function ServicePage () {
   const router = useRouter()
   const { id } = router.query
   const [fields, setFields] = useState(['loading'])
+  const [pdfInfo, setPdfInfo] = useState([])
+  const [profileData, setProfileData] = useState({})
+
   const getServiceDetail = async () => {
     try {
       const res = await fetch('/api/services/getSingleService', {
@@ -16,12 +20,11 @@ export default function ServicePage () {
       if (data && data.fields) {
         setFields(JSON.parse(data.fields))
       }
+      getForm()
     } catch (error) {
       console.log(error)
     }
   }
-
-  const [profileData, setProfileData] = useState({})
 
   const getUSerData = async () => {
     const getUserSession = await getSession()
@@ -41,6 +44,31 @@ export default function ServicePage () {
         console.log('error', error)
       }
     }
+  }
+
+  const getForm = async () => {
+    console.log('process.env+++' ,process.env.NEXT_PUBLIC_NEXTAUTH_URL )
+    const formUrl = `http://localhost:3000/aadhaar.pdf`
+    const formPdfBytes = await fetch(formUrl).then(res => res.arrayBuffer())
+    const pdfDoc = await PDFDocument.load(formPdfBytes)
+    const form = pdfDoc.getForm()
+    //const fields = form.getFields()
+    console.log('profileData',profileData)
+    form.getTextField('Text-ODjXylvMS3').setText(profileData.name)
+    form.getTextField('Text-vroy5YIQGU').setText(profileData.address)
+   
+    // fields.forEach(field => {
+    //   const type = field.constructor.name
+    //   const name = field.getName()
+    //   console.log(`${type}: ${name}`)
+    // })
+    form.flatten()
+    const pdfBytes = await pdfDoc.save()
+    const bytes = new Uint8Array(pdfBytes)
+    const blob = new Blob([bytes], { type: 'application/pdf' })
+    const docUrl = URL.createObjectURL(blob)
+    setPdfInfo(docUrl)
+    console.log('form+++', pdfBytes)
   }
 
   useEffect(async () => {
@@ -65,7 +93,7 @@ export default function ServicePage () {
         </ul>
         <button
           className='bg-gray-700 px-10 py-4 rounded text-xl text-white font-bold my-10 disabled:opacity-50'
-          onClick={() => alert('clicked')}
+          onClick={() => window.open(pdfInfo)}
           disabled={fields[0] === 'loading'}
         >
           Print Pdf
