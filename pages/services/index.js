@@ -20,7 +20,7 @@ export default function Services ({ services }) {
 
   return (
     <>
-      <div className='mx-40 my-10'>
+      <div className='md:mx-40 my-10'>
         <h1 className='text-4xl font-bold mb-2 text-gray-800'>Service List</h1>
         <div className='grid gap-4'>
           {services &&
@@ -31,18 +31,16 @@ export default function Services ({ services }) {
                 </h2>
                 <p className='text-gray-700'>{data.text}</p>
                 <div className='my-4'>
-                <Link href={`./services/${data.id}`}>
-                  <a
-                    className={`mt-4 uppercase text-sm font-bold tracking-wide text-gray-100 p-3 rounded-lg  focus:outline-none focus:shadow-outline hover:shadow-xl active:scale-90 transition duration-150 
+                  <Link href={`./services/${data.id}`}>
+                    <a
+                      className={`mt-4 uppercase text-sm font-bold tracking-wide text-gray-100 p-3 rounded-lg  focus:outline-none focus:shadow-outline hover:shadow-xl active:scale-90 transition duration-150 
               bg-green-400
            `}
-                  >
-                    Apply Now
-                  </a>
-                </Link>
-
+                    >
+                      Apply Now
+                    </a>
+                  </Link>
                 </div>
-             
               </div>
             ))}
         </div>
